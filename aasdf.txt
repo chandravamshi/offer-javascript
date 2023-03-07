@@ -1,0 +1,3 @@
+
+    "start": "parcel src/index.html --open",
+    "build": "parcel build src/index.html"
