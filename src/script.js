@@ -54,7 +54,7 @@ const getOfferTemplate = () => {
     });
 };
 
-function getTemplateData() {
+/*function getTemplateData() {
   axios
     .get("http://localhost:5001/offers/get-template-data", {
       params: data,
@@ -63,7 +63,7 @@ function getTemplateData() {
       templateData = res.data.data;
       writeNewDoc();
     });
-}
+}*/
 
 function writeNewDoc() {
   if (template && templateData) {
@@ -72,11 +72,11 @@ function writeNewDoc() {
     document.addEventListener("DOMContentLoaded", () => {
       const allPTags = document.getElementsByTagName("p");
       const bTag = allPTags.item(0).getElementsByTagName("b")[0];
-      bTag.innerHTML = "Hello, " + templateData.Last_Name;
+      bTag.innerHTML = templateData[2].value;
       const roomType = document.getElementById("zimmertyp");
-      roomType.innerHTML = templateData.Zimmertyp;
+      roomType.innerHTML = templateData[7].value;
       const grafts = document.getElementById("grafts");
-      grafts.innerHTML = templateData.Graftzahl;
+      grafts.innerHTML = templateData[3].value;
     });
     document.close();
   }
