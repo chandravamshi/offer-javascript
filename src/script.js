@@ -17,11 +17,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const uid = urlParams.get("uid");
 let template;
 let templateData;
+let offereData;
 const data = { uid: uid };
 
 const element = document.getElementById("getOffer");
 element.addEventListener("click", () => {
-  getOfferTemplate();
   /*fetch(
     "http://localhost:5001/offers/find-template?" +
       new URLSearchParams({
@@ -39,6 +39,10 @@ element.addEventListener("click", () => {
     });*/
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+  getOfferTemplate();
+});
+
 const getOfferTemplate = () => {
   axios
     .get("http://localhost:5001/offers/find-template-and-data-by-uid", {
@@ -47,6 +51,7 @@ const getOfferTemplate = () => {
     .then((res) => {
       template = res.data.template;
       templateData = res.data.data;
+      offereData = res.data.offerDetails;
       writeNewDoc();
     })
     .catch((error) => {
@@ -77,6 +82,15 @@ function writeNewDoc() {
       roomType.innerHTML = templateData[7].value;
       const grafts = document.getElementById("grafts");
       grafts.innerHTML = templateData[3].value;
+
+      if (offereData.isAccepted) {
+        const allSecureOfferButton =
+          document.getElementsByClassName("primary-cta");
+        // console.log(allSecureOfferButton);
+        [...allSecureOfferButton].forEach((ele) => {
+          ele.style.visibility = "hidden";
+        });
+      }
     });
     document.close();
   }
@@ -94,3 +108,22 @@ function writeNewDoc() {
 
   //document.close();
 }
+fetch(
+  (headerData?.req_url ||
+    "http://localhost:5001/offers/accept-offer?uid={offerId}&prefferedMonth={preferredMonth}",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      setTimeout(() => {
+        oldp.style.display = "none";
+        newp.style.display = "block";
+
+        setTimeout(() => {
+          newp.style.opacity = "100%";
+        }, 100);
+      }, 300);
+    })
+);
